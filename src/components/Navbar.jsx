@@ -42,9 +42,16 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className="navbar-end">
-                {status === 'authenticated' ? <>
+                {status === 'authenticated' ? <div className='flex items-center gap-2.5'>
+                    <Image
+                        src={session?.user?.image}
+                        width={50}
+                        height={50}
+                        alt='user profile'
+                        className='object-center rounded-full animate-pulse'
+                    ></Image>
                     <button className='btn btn-outline' onClick={() => signOut()}>LogOut</button>
-                </> : <div className='flex items-center gap-2.5'>
+                </div> : <div className='flex items-center gap-2.5'>
                     <Link href={'/login'} className='btn btn-outline'>LogIn</Link>
                     <Link href={'/register'} className='btn btn-outline'>register</Link>
                 </div>}

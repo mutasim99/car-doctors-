@@ -4,7 +4,6 @@ import registerUser from '@/app/actions/auth/registerUser';
 import SocialLogIn from '@/app/components/SocialLogIn';
 import Link from 'next/link';
 import React from 'react'
-import {  FaGoogle, FaGithub } from "react-icons/fa";
 
 export default function RegisterForm() {
     const handleSubmit = async(e) => {
