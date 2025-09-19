@@ -4,5 +4,5 @@
 .banner-overlay {
     background: #e0e0e0;
     background: linear-gradient(204deg, rgba(224, 224, 224, 0.92) 0%, rgba(41, 41, 41, 1) 99%);
-    opacity: 0.7
+    opacity: .6;
 }
