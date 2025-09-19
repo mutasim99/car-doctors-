@@ -1,31 +1,44 @@
 "use client"
 
-import registerUser from '@/app/actions/auth/registerUser';
-import SocialLogIn from '@/app/components/SocialLogIn';
-import Link from 'next/link';
-import React from 'react'
-import {  FaGoogle, FaGithub } from "react-icons/fa";
 
-export default function RegisterForm() {
-    const handleSubmit = async(e) => {
+import Link from 'next/link';
+import { signIn } from "next-auth/react"
+import React from 'react'
+import { FaGoogle, FaGithub } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import SocialLogIn from '@/app/components/SocialLogIn';
+
+export default function LogInForm() {
+    const router = useRouter()
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
-        const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-        const payload = { name, email, password }
-        const result = await registerUser(payload);
-        console.log(result);
+        toast('logging In')
+        try {
+            const response = await signIn('credentials', {
+                email,
+                password,
+                callbackUrl: '/',
+                redirect: false
+            })
+            if (response.ok) {
+                router.push('/');
+                form.reset();
+                toast.success('logIn successfully')
+            } else {
+                toast.error('Authentication FAILED')
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Authentication failed')
+        }
     }
     return (
         <div>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                    type="text"
-                    name='name'
-                    placeholder="Your name"
-                    className="input input-bordered w-full"
-                />
                 <input
                     type="email"
                     name='email'
@@ -55,9 +68,9 @@ export default function RegisterForm() {
 
             {/* Already have an account */}
             <p className="text-center text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link href="/login" className="text-red-500 font-medium">
-                    Login
+                Don't have an account?{" "}
+                <Link href="/register" className="text-red-500 font-medium">
+                    register
                 </Link>
             </p>
         </div>
