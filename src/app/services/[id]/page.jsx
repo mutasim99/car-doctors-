@@ -1,16 +1,15 @@
-import { collectionName, dbConnect } from '@/lib/dbConnect'
-import { ObjectId } from 'mongodb';
 import { FaDownload, FaCheckCircle } from "react-icons/fa";
 import { MdMiscellaneousServices } from "react-icons/md";
 import Image from 'next/image';
 import React from 'react'
 import bannerImg from '../../../../public/assets/images/checkout/checkout.png'
+import Link from "next/link";
 
 export default async function ServiceDetails({ params }) {
     const p = await params
-    const servicesCollection = await dbConnect(collectionName.serviceCollection);
-    const data = await servicesCollection.findOne({ _id: new ObjectId(p.id) });
-
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/service/${p.id}`)
+    const data = await res.json();
+    console.log(data);
     return (
         <div className='mt-10'>
             {/* Banner section */}
@@ -50,7 +49,7 @@ export default async function ServiceDetails({ params }) {
                     {/* Features sections */}
                     <div className='grid grid-cols-2 gap-4'>
                         {
-                            data.facility.map((feature, idx) => (
+                            data?.facility?.map((feature, idx) => (
                                 <div
                                     key={idx}
                                     className="p-4 border rounded-lg shadow-sm bg-base-100 flex items-start gap-3"
@@ -96,7 +95,7 @@ export default async function ServiceDetails({ params }) {
                         <p className="text-2xl font-bold text-primary mt-2">
                             ${data.price}
                         </p>
-                        <button className="btn btn-error w-full mt-4">Proceed Checkout</button>
+                        <Link href={`/checkout/${data._id}`} className="btn btn-error w-full mt-4">Proceed Checkout</Link>
                     </div>
                 </aside>
             </section>
